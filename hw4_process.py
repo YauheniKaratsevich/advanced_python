@@ -1,4 +1,5 @@
-from multiprocessing import Process, Value
+from multiprocessing import Process
+from multiprocessing import Value
 import time
 
 
