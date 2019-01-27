@@ -1,10 +1,9 @@
-from threading import Thread
-import urllib.request
-import asyncio
 import aiohttp
-import async_timeout
-import time
+import asyncio
 import os
+from threading import Thread
+import time
+import urllib.request
 
 
 urls = ['https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz',
