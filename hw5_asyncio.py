@@ -1,6 +1,7 @@
 import aiohttp
 import asyncio
 import os
+import re
 from threading import Thread
 import time
 import urllib.request
@@ -16,6 +17,19 @@ urls = ['https://www.python.org/ftp/python/3.7.2/Python-3.7.2.tgz',
         'https://www.python.org/ftp/python/3.6.7/Python-3.6.7rc2.tgz',
         'https://www.python.org/ftp/python/3.7.1/Python-3.7.1rc1.tgz',
         'https://www.python.org/ftp/python/3.6.7/Python-3.6.7rc1.tgz']
+
+
+def get_urls(url):
+    request = urllib.request.Request(url)
+    website = urllib.request.urlopen(request)
+    html = str(website.read())
+    #links = re.findall('"((http)|(ftp))s?://.*\.tgz$"', html)
+    links = re.findall('"(https://.*?)"', html)
+    links = [l for l in links if 'tgz' in l]
+    return links
+
+
+    return html
 
 
 def get_name(link):
@@ -63,13 +77,16 @@ def rm_files(links):
 
 
 if __name__ == '__main__':
+    urls = get_urls('https://www.python.org/downloads/source/') 
+    print(urls)
+    print(len(urls))
     print("Synchronus download: ", end="")
     st_time = time.time()
-    sync_dowload(urls)
+    #sync_dowload(urls)
     sp_time = time.time()
     print("Done. {} files. Took {} sec.".format(len(urls), sp_time - st_time))
 
-    rm_files(urls)
+    #rm_files(urls)
 
     print("Download with threads: ", end="")
     st_time = time.time()
