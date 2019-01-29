@@ -23,9 +23,10 @@ def get_urls(url):
     request = urllib.request.Request(url)
     website = urllib.request.urlopen(request)
     html = str(website.read())
-    #links = re.findall('"((http)|(ftp))s?://.*\.tgz$"', html)
-    links = re.findall('"(https://.*?)"', html)
-    links = [l for l in links if 'tgz' in l]
+    links = re.findall('"((ht|f)tps?://\S*\.(tgz|tar\.xz))"', html)
+    links = [l[0] for l in links]
+    #links = re.findall('"(https://.*?)"', html)
+    #links = [l for l in links if 'tgz' in l]
     return links
 
 
@@ -53,9 +54,10 @@ def thread_dowload(links):
 
     for th in threads:
         th.start()
-
-    for th in threads:
         th.join()
+
+#    for th in threads:
+#        th.join()
 
 
 async def fetch_page(session, url):
@@ -73,18 +75,19 @@ async def main(links):
 
 def rm_files(links):
     for link in links:
-        os.remove(str(get_name(link)))
+        try:
+            os.remove(str(get_name(link)))
+        except:
+            print("No file {}".format(str(get_name(link))))
 
 
 if __name__ == '__main__':
     urls = get_urls('https://www.python.org/downloads/source/') 
-    print(urls)
-    print(len(urls))
-    print("Synchronus download: ", end="")
+    #print("Synchronus download: ", end="")
     st_time = time.time()
     #sync_dowload(urls)
     sp_time = time.time()
-    print("Done. {} files. Took {} sec.".format(len(urls), sp_time - st_time))
+    #print("Done. {} files. Took {} sec.".format(len(urls), sp_time - st_time))
 
     #rm_files(urls)
 
@@ -96,12 +99,12 @@ if __name__ == '__main__':
 
     rm_files(urls)
 
-    print("Download with aiohttp and asyncio: ", end="")
-    st_time = time.time()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(urls))
-    loop.close()
-    sp_time = time.time()
-    print("Done. {} files. Took {} sec.".format(len(urls), sp_time - st_time))
+    #print("Download with aiohttp and asyncio: ", end="")
+    #st_time = time.time()
+    #loop = asyncio.get_event_loop()
+    #loop.run_until_complete(main(urls))
+    #loop.close()
+    #sp_time = time.time()
+    #print("Done. {} files. Took {} sec.".format(len(urls), sp_time - st_time))
 
-    rm_files(urls)
+    #rm_files(urls)
