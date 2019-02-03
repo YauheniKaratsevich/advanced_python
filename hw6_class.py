@@ -45,8 +45,7 @@ if __name__ == "__main__":
     print(y)
     print(z)
 
-    print(z + 3.11*x + y*0.8)
-    print(z + 1*x + y*1)
+    print(z + 3.11 * x + y * 0.8)
 
     lst = [Money(10, "BYN"), Money(10), Money(12.01, "CYN")]
     s = sum(lst)
