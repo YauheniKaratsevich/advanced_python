@@ -29,19 +29,25 @@ class Money:
         result_value = self.int_value + other
         return Money(result_value, result_currency)
 
-    def __iadd__(self, other):
-        self.int_value += other.int_value
-        self.value += other.int_value / self.currency
+    def change(self, cur1, cur2):
+        return self.rate[cur1] / self.rate[cur2]
+
+    def changeTo(self, cur):
+        self.value = self.value * self.change(self.currency, cur)
+        self.currency = cur
 
 
 if __name__ == "__main__":
-    a = Money(10, "BYN")
-    b = Money(100, "CYN")
-    c = Money(10, "USD")
-    print(a, b, c)
+    x = Money(10, "BYN")
+    y = Money(11)
+    z = Money(12.34, "EUR")
+    print(x)
+    print(y)
+    print(z)
 
-    print(a + 3.11 * b + c * 0.8)
+    print(z + 3.11*x + y*0.8)
+    print(z + 1*x + y*1)
 
-    z = [Money(10, "BYN"), Money(10, "USD"), Money(10, "CYN")]
-    r = sum(z)
-    print(r)
+    lst = [Money(10, "BYN"), Money(10), Money(12.01, "CYN")]
+    s = sum(lst)
+    print(s)
