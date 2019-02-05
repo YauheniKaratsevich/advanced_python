@@ -1,4 +1,4 @@
-class Money:
+class Money(object):
     def __init__(self, value, currency="USD"):
         self.rate = {"USD": 1, "BYN": 0.46, "EUR": 1.15, "CYN": 0.15}
         self.value = value
